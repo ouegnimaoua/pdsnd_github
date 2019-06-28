@@ -2,6 +2,9 @@ import time
 import pandas as pd
 import numpy as np
 
+
+""" List of cities data files available."""
+
 CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
@@ -23,15 +26,15 @@ def get_filters():
             print("Please, enter the name of the appropriate city.\n")
         else:
             break
-            
-     # TO DO: get user input for month (all, january, february, ... , june)    
+
+     # TO DO: get user input for month (all, january, february, ... , june)
     while True:
         month = input("Enter the month (January, February, March, April, May, June) to filter by, or ''all'' to apply no month filter.\n").lower()
         if month not in ('all', 'january', 'february', 'march', 'april', 'may', 'june'):
             print("Please, enter the apropriate value.\n")
         else:
             break
-    
+
      # TO DO: get user input for day of week (all, monday, tuesday, ... sunday)
     while True:
         day = input("Enter the day of week (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday) to filter by, or ''all'' to apply no day of weeke filter.\n").lower()
@@ -39,8 +42,8 @@ def get_filters():
             print("Please, enter the apropriate value.\n")
         else:
             break
-            
-     
+
+
     print('-'*40)
     return city, month, day
 
@@ -58,23 +61,23 @@ def load_data(city, month, day):
     """
     # load data file into dataframe
     df = pd.read_csv(CITY_DATA[city])
-    
+
     # convert Start Time column to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
-    
+
     # extract month and day of week from Start Time to create new columns
     df['month'] = df['Start Time'].dt.month
     df['day_of_week'] = df['Start Time'].dt.weekday_name
-    
+
     # filter by month if possible
     if month != 'all':
         # use the index of the months list to get the corresponding int
         months = ['january', 'february', 'march', 'april', 'may', 'june']
         month = months.index(month) + 1
-        
+
         # now filter by month to create the new dataframe
         df = df[df['month'] == month]
-    
+
     # filter by day of week if possible
     if day != 'all':
         # filter by day of week to create the new dataframe
@@ -99,14 +102,14 @@ def time_stats(df):
     common_weekday = df['day_of_week'].mode()[0]
     count_weekday = int(df['day_of_week'].value_counts()[0])
     print("\nThe most common day of week : {},    Count : {}.".format(common_weekday,count_weekday))
-    
+
     # TO DO: display the most common start hour
     # extract hour from Start Time to create new column
     df['hour'] = df['Start Time'].dt.hour
     common_hour = df['hour'].mode()[0]
     count_hour = int(df['hour'].value_counts()[0])
     print("\nThe most common start hour : {},    Count : {}.".format(common_hour,count_hour))
-   
+
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
@@ -121,7 +124,7 @@ def station_stats(df):
     common_sstation = df['Start Station'].mode()[0]
     count_sstation = int(df['Start Station'].value_counts()[0])
     print("\nThe most common start station : {},    Count : {}.".format(common_sstation,count_sstation))
-    
+
     # TO DO: display most commonly used end station
     common_estation = df['End Station'].mode()[0]
     count_estation = int(df['End Station'].value_counts()[0])
@@ -144,10 +147,10 @@ def trip_duration_stats(df):
 
     # TO DO: display total travel time
     total_duration = df['Trip Duration'].sum()
-    
+
     # TO DO: display mean travel time
     average_duration = df['Trip Duration'].mean()
-    
+
     count_duration = int(df['Trip Duration'].count())
     print("\nTotal duration : {} seconds,    Count : {},   Average Duration : {} seconds.".format(total_duration, count_duration, average_duration))
 
@@ -155,7 +158,7 @@ def trip_duration_stats(df):
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
-    
+
 def user_stats(df):
     """Displays statistics on bikeshare users."""
 
@@ -171,7 +174,7 @@ def user_stats(df):
         count_gender = df['Gender'].value_counts()
         print("\nCount of gender among users :\n {}.".format(count_gender))
     except:
-        print("Column ''GENDER'' not exist in the data source.") 
+        print("Column ''GENDER'' not exist in the data source.")
 
     # TO DO: Display earliest, most recent, and most common year of birth
     try:
@@ -186,46 +189,46 @@ def user_stats(df):
     print('-'*40)
 
 def dsp_raw_data(df):
-    
-    """ 
+
+    """
     Loads raw data on user demande.
     Ask user to display raw databy sequence of five.
     """
     # drop all new coulums created after loading raw data
     df = df.drop(['month', 'day_of_week'], axis = 1)
-        
+
     # initialize rows index
     rows_count = 0
-       
+
     # get userimput for display raw data
     raw_data = input("\n Would you like to display raw data used to compute statistics ? Please write 'yes' or 'no' \n").lower()
     while True:
         if raw_data == 'no':
             return
-        
+
         if raw_data == 'yes':
             print(df[rows_count: rows_count + 5])
             rows_count += 5
-        
+
         raw_data = input("\n Would you like to see five more rows of the raw data used to compute the stats? Please write 'yes' or 'no' \n").lower()
 
-    
+
 def main():
     while True:
         # get the filters whitin the main function
         city, month, day = get_filters()
-        
-        # create  dataset with the filters 
+
+        # create  dataset with the filters
         df = load_data(city, month, day)
-        
+
         # call statistics functions
         time_stats(df)
         station_stats(df)
         trip_duration_stats(df)
-        user_stats(df)  
+        user_stats(df)
         dsp_raw_data(df)
-         
-        # restart or not 
+
+        # restart or not
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
             break
