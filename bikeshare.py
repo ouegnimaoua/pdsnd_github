@@ -2,12 +2,14 @@ import time
 import pandas as pd
 import numpy as np
 
+#loading data files
+CITY_DATA = {
+    'chicago': 'chicago.csv',
+    'new york city': 'new_york_city.csv',
+    'washington': 'washington.csv'
+}
 
-""" List of cities data files available."""
-
-CITY_DATA = { 'chicago': 'chicago.csv',
-              'new york city': 'new_york_city.csv',
-              'washington': 'washington.csv' }
+print("Welcome to the US Bikeshire Data exploration...!\n")
 
 def get_filters():
     """
@@ -42,9 +44,19 @@ def get_filters():
             print("Please, enter the apropriate value.\n")
         else:
             break
+<<<<<<< HEAD
 
 
     print('-'*40)
+||||||| merged common ancestors
+
+
+    print('-'*40)
+=======
+
+
+    print('-'*45)
+>>>>>>> 32fa352d804ccf8e6b0f77535a813c5a9c1c8c9f
     return city, month, day
 
 
@@ -111,7 +123,7 @@ def time_stats(df):
     print("\nThe most common start hour : {},    Count : {}.".format(common_hour,count_hour))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
-    print('-'*40)
+    print('-'*45)
 
 
 def station_stats(df):
@@ -136,7 +148,7 @@ def station_stats(df):
 
 
     print("\nThis took %s seconds." % (time.time() - start_time))
-    print('-'*40)
+    print('-'*45)
 
 
 def trip_duration_stats(df):
@@ -156,9 +168,15 @@ def trip_duration_stats(df):
 
 
     print("\nThis took %s seconds." % (time.time() - start_time))
-    print('-'*40)
+    print('-'*45)
 
 
+<<<<<<< HEAD
+
+||||||| merged common ancestors
+
+=======
+>>>>>>> 32fa352d804ccf8e6b0f77535a813c5a9c1c8c9f
 def user_stats(df):
     """Displays statistics on bikeshare users."""
 
@@ -186,7 +204,7 @@ def user_stats(df):
         print("''BIRTH DATE'' data in not available for this periode.")
 
     print("\nThis took %s seconds." % (time.time() - start_time))
-    print('-'*40)
+    print('-'*45)
 
 def dsp_raw_data(df):
 
